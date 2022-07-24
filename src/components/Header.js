@@ -3,7 +3,10 @@ function Header() {
   return (
     <div
       className="navbar sticky-top navbar-light"
-      style={{ backgroundColor: "white", border: "solid grey 0.5px" }}
+      style={{
+        backgroundColor: "#EFFFFD",
+        border: "none",
+      }}
     >
       <h5 className="navbar-text" style={{ marginLeft: "1%" }}>
         Contact Manager

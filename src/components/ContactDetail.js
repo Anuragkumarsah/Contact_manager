@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const ContactDetail = (props) => {
   //   const { name, phoneNumber } = props.contacts;
@@ -12,18 +12,12 @@ const ContactDetail = (props) => {
   // function putURL(json) {
   //   if (set === 1) setURL(json.url);
   // }
-  const navigation = useNavigate();
-  const goBack = () => {
-    // getURL();
-    navigation("/");
-    // getURL();
-  };
 
   return (
     <div
       style={{
         margin: "auto",
-        marginTop: "5%",
+        marginTop: "2%",
         width: "25%",
       }}
     >
@@ -35,7 +29,9 @@ const ContactDetail = (props) => {
             Phone Number : {location.state.foo.phoneNumber}
           </h6>
 
-          <button onClick={goBack}>Go Back</button>
+          <Link to="/">
+            <button className="btn btn-primary">Go Back</button>
+          </Link>
         </div>
       </div>
     </div>

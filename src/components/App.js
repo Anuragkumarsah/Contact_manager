@@ -2,19 +2,35 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { v4 as uuid_v4 } from "uuid";
 import "./App.css";
+import api from "../api/contacts";
 import Header from "./Header";
 import AddContact from "./AddContact";
 import ContactList from "./ContactList";
 import ContactDetail from "./ContactDetail";
 
 function App() {
-  const LOCAL_STORAGE_KEY = "contacts";
-  let [contacts, setContacts] = useState([]);
-  const addContactHandler = (contact) => {
-    setContacts([...contacts, { id: uuid_v4(), ...contact }]);
+  const [contacts, setContacts] = useState([]);
+
+  //Retrieve Contacts
+
+  const retrieveContacts = async () => {
+    const response = await api.get("/contacts");
+    return response.data;
   };
 
-  const removeContactHandler = (id) => {
+  const addContactHandler = async (contact) => {
+    const request = {
+      id: uuid_v4(),
+      ...contact,
+    };
+
+    const response = await api.post("/contacts", request);
+
+    setContacts([...contacts, response.data]);
+  };
+
+  const removeContactHandler = async (id) => {
+    await api.delete("/contacts/" + id);
     const newContactList = contacts.filter((contact) => {
       return id !== contact.id;
     });
@@ -22,15 +38,18 @@ function App() {
   };
 
   useState(() => {
-    const retrieveContact = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (retrieveContact) setContacts(retrieveContact);
+    // const retrieveContact = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    // if (retrieveContact) setContacts(retrieveContact);
+    const getAllContacts = async () => {
+      const allContacts = await retrieveContacts();
+      if (allContacts) setContacts(allContacts);
+    };
+    getAllContacts();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
-  }, [contacts]);
+  useEffect(() => {}, [contacts]);
   return (
-    <div>
+    <div className="body">
       <Router>
         <Header />
         <Routes>

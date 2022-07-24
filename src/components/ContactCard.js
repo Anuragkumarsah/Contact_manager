@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const CardContact = (props) => {
-  const { id, name, phoneNumber, set } = props.contacts;
+  const { id, name, phoneNumber } = props.contacts;
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ const CardContact = (props) => {
         <div className="row card-body">
           <div className="col" style={{ borderBottom: "0.5px solid grey" }}>
             <Link
-              to="/contact/${id}"
+              to="/contact/{id}"
               state={{ foo: props.contacts }}
               style={{ textDecoration: "none" }}
             >

@@ -1,19 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { getData } from "../api/images";
+
 function AddContact(props) {
+  //States
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [set, setSet] = useState(name);
-  console.log(set);
+
   const navigation = useNavigate();
+  const isMounted = useRef(false);
+
+  //GET IMAGES From images.js through api
+  const getImages = async () => {
+    const data = await getData();
+    setSet(data.url);
+  };
+
+  //Run on mount to get a image
   useEffect(() => {
-    fetch("https://api.waifu.pics/sfw/bully")
-      .then((response) => response.json())
-      .then((json) => {
-        setSet(json.url);
-      });
+    if (isMounted.current) {
+      getImages();
+    } else {
+      isMounted.current = true;
+    }
   }, []);
+
+  // Adds the details to the state
   const add = (e) => {
     e.preventDefault();
     if (name === "" || phoneNumber === "") {
@@ -25,10 +38,27 @@ function AddContact(props) {
     setPhoneNumber("");
     navigation("/");
   };
+
   return (
     <div>
       <div>
         <h2 style={{ fontWeight: "bold", margin: "15px" }}>Add Contact</h2>
+        <img
+          src={set}
+          alt="profile"
+          style={{
+            margin: "auto",
+            borderRadius: "10%",
+            width: "18%",
+          }}
+        />
+        <button
+          onClick={getImages}
+          className="btn btn-primary"
+          style={{ marginLeft: "10px" }}
+        >
+          Refresh Image
+        </button>
         <form onSubmit={add}>
           <div className="col-auto">
             <label
@@ -66,6 +96,11 @@ function AddContact(props) {
           <button className="btn btn-primary" style={{ margin: "15px" }}>
             Add
           </button>
+          <Link to="/">
+            <button className="btn btn-primary" style={{ margin: "15px" }}>
+              Cancel
+            </button>
+          </Link>
         </form>
       </div>
     </div>

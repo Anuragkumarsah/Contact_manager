@@ -23,14 +23,20 @@ const ContactList = (props) => {
     >
       <div
         className="card-header"
-        style={{ textAlign: "center", width: "45rem" }}
+        style={{ textAlign: "center", width: "45rem", marginTop: "10px" }}
       >
         <div className="row">
           <div className="col">
-            <h3 style={{ marginLeft: "14.5%" }}>Contact List</h3>
+            <h3 className="sticky-top" style={{ marginLeft: "14%" }}>
+              Contact List
+            </h3>
           </div>
           <Link to="/add" className="col-3">
-            <button to="/add" className="btn btn-primary">
+            <button
+              to="/add"
+              className="btn btn-primary"
+              style={{ marginRight: "22%", marginBottom: "10px" }}
+            >
               Add Contacts
             </button>
           </Link>
